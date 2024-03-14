@@ -18,6 +18,10 @@ const florSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  coverImage: {
+    type: String,
+    required: false,
+  },
 });
 
 const Flor = mongoose.model("Flor", florSchema);

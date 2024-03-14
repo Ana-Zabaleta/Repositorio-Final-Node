@@ -12,7 +12,7 @@ const {
   upload,
   uploadToCloudinary,
 } = require("../middlewares/file.middleware");
-const { isAuth } = require("../middlewares/auth.middleware");
+const { isAuth } = require("../middlewares/file.middleware");
 
 // Ruta para crear un nuevo álbum
 florRouter.post(
