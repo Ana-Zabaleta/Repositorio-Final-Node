@@ -3,7 +3,16 @@ const { HTTPSTATUSCODE } = require("../../utils/httpStatusCode");
 
 const createFlor = async (req, res, next) => {
   try {
-    const flor = await Flor.create(req.body);
+    const { nombre, origen, cantidad, id } = req.body;
+    const coverImage = req.file ? req.file.path : "";
+
+    const flor = await Flor.create({
+      nombre,
+      origen,
+      cantidad,
+      id,
+      coverImage,
+    });
     res.status(201).json({
       status: 201,
       message: HTTPSTATUSCODE[201],
@@ -68,7 +77,36 @@ const updateFlor = async (req, res, next) => {
     next(error);
   }
 };
+const addFlorCover = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        status: 400,
+        message: "No file in the request.",
+      });
+    }
+    const flor = await Flor.findByIdAndUpdate(
+      req.params.id,
+      { coverImage: req.file.path },
+      { new: true }
+    );
 
+    if (flor) {
+      res.status(200).json({
+        status: 200,
+        message: HTTPSTATUSCODE[200],
+        data: flor,
+      });
+    } else {
+      res.status(404).json({
+        status: 404,
+        message: HTTPSTATUSCODE[404],
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 const deleteFlor = async (req, res, next) => {
   try {
     const flor = await Flor.findByIdAndDelete(req.params.id);
@@ -93,5 +131,6 @@ module.exports = {
   getAllFlor,
   getFlorById,
   updateFlor,
+  addFlorCover,
   deleteFlor,
 };

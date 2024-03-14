@@ -10,8 +10,10 @@ const { connectMongo } = require("./src/data/mongo");
 const userRouter = require("./src/api/routes/user.routes");
 const floristeriaRouter = require("./src/api/routes/floristeria.routes");
 const florRouter = require("./src/api/routes/flores.routes");
-const { setError } = require("./src/utils/error.util");
-
+const {
+  notFoundHandler,
+  errorHandler,
+} = require("./src/api/middlewares/error.middleware");
 // 2. CONFIG
 // 2.1 configuración de la app
 require("dotenv").config(); // desde aquí se cargan las var de entorno del .env, hasta aquí no existen
@@ -64,6 +66,8 @@ app.use("*", (req, res, next) =>
 app.use((error, req, res, next) =>
   res.status(error.status || 500).json(error.message || "Unexpected error")
 );
+app.use(notFoundHandler);
+app.use(errorHandler);
 /// hemos visto otro error
 app.use((err, req, res, next) => {
   console.error(err.message);
