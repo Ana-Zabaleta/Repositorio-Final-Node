@@ -12,7 +12,7 @@ const {
   upload,
   uploadToCloudinary,
 } = require("../middlewares/file.middleware");
-const { isAuth } = require("../middlewares/file.middleware");
+const { isAuth } = require("../middlewares/auth.middleware");
 
 // Ruta para crear un nuevo álbum
 florRouter.post(
@@ -29,6 +29,7 @@ florRouter.patch(
   [upload.single("coverImage"), uploadToCloudinary],
   addFlorCover
 );
+florRouter.post("/", [isAuth, upload.single("coverImage")], createFlor);
 florRouter.delete("/:id", deleteFlor);
 
 module.exports = florRouter;
