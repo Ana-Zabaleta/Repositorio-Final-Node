@@ -10,18 +10,29 @@ const {
   getAllFloristeria,
   getFloristeriaById,
   updateFloristeria,
+  addFloristeriaCover,
   deleteFloristeria,
 } = require("../controllers/floristeria.controller");
 
-floristeriaRouter.post("/", createFloristeria);
+floristeriaRouter.post(
+  "/",
+  [upload.single("coverImage"), uploadToCloudinary],
+  createFloristeria
+);
 floristeriaRouter.get("/", getAllFloristeria);
 floristeriaRouter.get("/:id", getFloristeriaById);
 floristeriaRouter.put("/:id", updateFloristeria);
-floristeriaRouter.delete("/:id", deleteFloristeria);
+floristeriaRouter.patch("/:id", updateFloristeria);
+floristeriaRouter.patch(
+  "/cover/:id",
+  [upload.single("coverImage"), uploadToCloudinary],
+  addFloristeriaCover
+);
 floristeriaRouter.post(
   "/",
   [isAuth, upload.single("coverImage")],
   createFloristeria
 );
+floristeriaRouter.delete("/:id", deleteFloristeria);
 
 module.exports = floristeriaRouter;

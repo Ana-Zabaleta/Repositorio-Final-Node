@@ -12,6 +12,10 @@ const floristeriaSchema = new mongoose.Schema({
   direccion: {
     type: String,
   },
+  coverImage: {
+    type: String,
+    required: false,
+  },
 });
 
 const Floristeria = mongoose.model("Floristeria", floristeriaSchema);

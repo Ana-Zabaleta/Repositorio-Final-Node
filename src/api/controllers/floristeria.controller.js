@@ -73,7 +73,36 @@ const updateFloristeria = async (req, res, next) => {
     next(error);
   }
 };
+const addFloristeriaCover = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        status: 400,
+        message: "No file in the request.",
+      });
+    }
+    const flor = await Flor.findByIdAndUpdate(
+      req.params.id,
+      { coverImage: req.file.path },
+      { new: true }
+    );
 
+    if (flor) {
+      res.status(200).json({
+        status: 200,
+        message: HTTPSTATUSCODE[200],
+        data: flor,
+      });
+    } else {
+      res.status(404).json({
+        status: 404,
+        message: HTTPSTATUSCODE[404],
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 const deleteFloristeria = async (req, res, next) => {
   try {
     const floristeria = await Floristeria.findByIdAndDelete(req.params.id);
@@ -92,5 +121,6 @@ module.exports = {
   getAllFloristeria,
   getFloristeriaById,
   updateFloristeria,
+  addFloristeriaCover,
   deleteFloristeria,
 };
