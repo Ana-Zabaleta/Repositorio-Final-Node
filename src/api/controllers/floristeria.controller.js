@@ -60,7 +60,6 @@ const updateFloristeria = async (req, res, next) => {
       }
     );
     if (floristeria) {
-      console.log(floristeria);
       res.status(200).json({
         status: 200,
         // message: HTTPSTATUSCODE[200],
@@ -81,13 +80,13 @@ const addFloristeriaCover = async (req, res, next) => {
         message: "No file in the request.",
       });
     }
-    const flor = await Flor.findByIdAndUpdate(
+    const floristeria = await Floristeria.findByIdAndUpdate(
       req.params.id,
       { coverImage: req.file.path },
       { new: true }
     );
 
-    if (flor) {
+    if (floristeria) {
       res.status(200).json({
         status: 200,
         message: HTTPSTATUSCODE[200],
